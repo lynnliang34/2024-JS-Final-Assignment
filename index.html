@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>前台</title>
+
+    <!-- icons -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
@@ -13,6 +15,11 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+
     <link rel="stylesheet" href="CSS/all.css" />
   </head>
   <body>
@@ -305,38 +312,29 @@
       <h3 class="section-title">我的購物車</h3>
       <div class="overflowWrap">
         <table class="shoppingCart-table">
-          <tr>
-            <th width="40%">品項</th>
-            <th width="15%">單價</th>
-            <th width="15%">數量</th>
-            <th width="15%">金額</th>
-            <th width="15%"></th>
-          </tr>
-          <tr>
-            <td>
-              <div class="cardItem-title">
-                <img src="image/HvT3zlU.png" alt="" />
-                <p>Antony 雙人床架／雙人加大</p>
-              </div>
-            </td>
-            <td>NT$12,000</td>
-            <td>1</td>
-            <td>NT$12,000</td>
-            <td class="discardBtn">
-              <a href="#" class="material-icons"> clear </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="#" class="discardAllBtn">刪除所有品項</a>
-            </td>
-            <td></td>
-            <td></td>
-            <td>
-              <p>總金額</p>
-            </td>
-            <td>NT$13,980</td>
-          </tr>
+          <thead>
+            <tr>
+              <th width="40%">品項</th>
+              <th width="15%">單價</th>
+              <th width="15%">數量</th>
+              <th width="15%">金額</th>
+              <th width="15%"></th>
+            </tr>
+          </thead>
+          <tbody class="shoppingCart-tableList"></tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <a href="#" class="discardAllBtn">刪除所有品項</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td>
+                <p>總金額</p>
+              </td>
+              <td class="total-amount">NT$0</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </section>
@@ -411,6 +409,10 @@
 
     <!-- axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+
+    <!-- sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="JS/index-animation.js"></script>
     <script src="JS/config.js"></script>
     <script src="JS/util.js"></script>

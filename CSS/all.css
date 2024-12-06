@@ -711,8 +711,13 @@ body {
   text-align: left;
 }
 
-.shoppingCart-table tr {
+.shoppingCart-table tbody tr {
   border-bottom: 1px solid #b9b9b9;
+  border-top: 1px solid #b9b9b9;
+}
+
+.shoppingCart-table tfoot {
+  border-top: 1px solid #b9b9b9;
 }
 
 .shoppingCart-table tr:first-child,
@@ -738,6 +743,19 @@ body {
 .cardItem-title img {
   margin-right: 15px;
   max-width: 80px;
+}
+
+.quantityBtn {
+  text-decoration: none;
+  color: #000000;
+  vertical-align: middle;
+  padding: 0 5px;
+}
+
+.quantityBtn span:hover {
+  color: #6a33f8;
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
 }
 
 .discardBtn {
