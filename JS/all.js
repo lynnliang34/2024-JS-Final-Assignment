@@ -7,6 +7,37 @@ const productSelect = document.querySelector(".productSelect");
 const cartList = document.querySelector(".shoppingCart-tableList");
 const totalAmount = document.querySelector(".total-amount");
 const discardAllBtn = document.querySelector(".discardAllBtn");
+const orderInfoInput = document.querySelectorAll(".orderInfo-input");
+const orderInfoMessage = document.querySelectorAll(".orderInfo-message");
+const orderInfoForm = document.querySelector(".orderInfo-form");
+const orderInfoBtn = document.querySelector(".orderInfo-btn");
+
+// 驗證表單
+const formConstraints = {
+  姓名: {
+    presence: { message: "必填" },
+  },
+  電話: {
+    presence: { message: "必填" },
+    format: {
+      pattern: "^0[0-9]*",
+      message: "請輸入 0 開頭的數字",
+    },
+    length: {
+      minimum: 9,
+      maximum: 10,
+      message: "請輸入手機 9 碼，或是市話加區號 9~10 碼",
+    },
+  },
+  Email: {
+    presence: { message: "必填" },
+    email: { message: "請檢察格式" },
+  },
+  寄送地址: {
+    presence: { message: "必填" },
+  },
+};
+
 /* 一一一一一一一一一一 變數宣告區 ↑ 一一一一一一一一一一 */
 
 /* 一一一一一一一一一一 函式宣告區 ↓ 一一一一一一一一一一 */
@@ -156,6 +187,42 @@ const deleteCartProduct = (cartId) => {
     });
 };
 
+// 刪除購物車全部商品
+const deleteAllCartProduct = () => {
+  axios
+    .delete(`${base_url}/customer/${api_path}/carts`)
+    .then(function (response) {
+      Swal.fire("刪除全部訂單成功 (๑´ㅂ`๑)");
+      getCartList();
+    });
+};
+
+// 送出訂單
+const postOrder = () => {
+  const customerName = document.querySelector("#customerName").value;
+  const customerPhone = document.querySelector("#customerPhone").value;
+  const customerEmail = document.querySelector("#customerEmail").value;
+  const customerAddress = document.querySelector("#customerAddress").value;
+  const customerTradeWay = document.querySelector("#tradeWay").value;
+
+  axios
+    .post(`${base_url}/customer/${api_path}/orders`, {
+      data: {
+        user: {
+          name: customerName,
+          tel: customerPhone,
+          email: customerEmail,
+          address: customerAddress,
+          payment: customerTradeWay,
+        },
+      },
+    })
+    .then(function (response) {
+      Swal.fire("成功送出訂單 (ﾉ>ω<)ﾉ");
+      orderInfoForm.reset();
+      getCartList();
+    });
+};
 /* 一一一一一一一一一一 函式宣告區 ↑ 一一一一一一一一一一 */
 
 /* 一一一一一一一一一一 執行代碼區 ↓ 一一一一一一一一一一 */
@@ -218,11 +285,48 @@ cartList.addEventListener("click", function (e) {
 // 刪除購物車全部商品
 discardAllBtn.addEventListener("click", function (e) {
   e.preventDefault();
-  axios
-    .delete(`${base_url}/customer/${api_path}/carts`)
-    .then(function (response) {
-      Swal.fire("刪除全部訂單成功 (๑´ㅂ`๑)");
-      getCartList();
+  deleteAllCartProduct();
+});
+
+// 焦點離開輸入框時驗證
+orderInfoInput.forEach((input) => {
+  input.addEventListener("blur", function (e) {
+    const targetName = e.target.getAttribute("name");
+    const formError = validate(orderInfoForm, formConstraints) || [];
+    const errorText = formError[targetName] || [];
+
+    orderInfoMessage.forEach((message) => {
+      const messageName = message.getAttribute("data-message");
+
+      if (targetName === messageName) {
+        let newErrorText = "";
+        const attributeLength = targetName.length + 1;
+
+        errorText.forEach((str, index) => {
+          if (index > 0) {
+            newErrorText += "、";
+          }
+          newErrorText += str.slice(attributeLength);
+        });
+
+        message.innerHTML = newErrorText;
+      }
     });
+  });
+});
+
+// 點擊送出預定資料按鈕
+orderInfoBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  const isformCorrect = !validate(orderInfoForm, formConstraints);
+
+  if (cartData.length === 0) {
+    Swal.fire("購物車空空如也啊？ (｡ŏ_ŏ)");
+    return;
+  } else if (isformCorrect) {
+    postOrder();
+  } else {
+    Swal.fire("資料填寫有誤 (゜皿。)");
+  }
 });
 /* 一一一一一一一一一一 執行代碼區 ↑ 一一一一一一一一一一 */
