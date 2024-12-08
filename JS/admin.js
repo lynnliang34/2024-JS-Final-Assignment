@@ -22,6 +22,7 @@ const getOrderList = () => {
     .then(function (response) {
       orderData = response.data.orders;
       renderOrderList();
+      renderC3();
     })
     .catch(function (error) {
       console.log(error.message);
@@ -135,6 +136,7 @@ const delAllOrder = () => {
       getOrderList();
     });
 };
+
 /* 一一一一一一一一一一 函式宣告區 ↑ 一一一一一一一一一一 */
 
 /* 一一一一一一一一一一 執行代碼區 ↓ 一一一一一一一一一一 */
